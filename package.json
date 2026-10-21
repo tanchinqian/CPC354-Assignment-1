@@ -1,0 +1,7 @@
+{
+  "name": "cpc354-assignment-1-skeleton",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Raw WebGL module skeleton for the CPC word-logo assignment."
+}

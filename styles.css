@@ -1,0 +1,8 @@
+/* Yap Han Lim: basic scaffold styling; develop the final interface in your module task. */
+body { max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #000; background: #fff; font: 16px Arial, sans-serif; }
+canvas { display: block; width: 100%; height: auto; border: 1px solid #000; }
+fieldset { margin-top: 1rem; padding: 1rem; }
+label { display: block; margin: .8rem 0 .3rem; }
+button { margin: 1rem .5rem 0 0; padding: .5rem 1rem; }
+input[type="range"] { width: min(100%, 320px); }
+:focus-visible { outline: 2px solid #000; outline-offset: 3px; }

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPC354 Assignment 1 Skeleton</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <h1>CPC 3D Word Logo</h1>
+  <p id="status" role="status">Loading the module skeleton...</p>
+  <!-- Goo Yong Shen: render into this canvas after completing renderer.js. -->
+  <canvas id="gl-canvas" width="800" height="450" aria-label="CPC logo preview"></canvas>
+  <!-- Yap Han Lim: complete the bindings in ui.js. These controls are placeholders. -->
+  <fieldset id="controls">
+    <legend>Parameters to set before animation</legend>
+    <label for="depth">Extrusion depth</label>
+    <input id="depth" type="number" min="0.01" step="0.01" value="0.5">
+    <label for="speed">Animation speed</label>
+    <input id="speed" type="range" min="0.25" max="2" step="0.25" value="1">
+    <label for="color">Logo colour</label>
+    <input id="color" type="color" value="#000000">
+    <div>
+      <button id="start" type="button">Start</button>
+      <button id="stop" type="button">Stop</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+  </fieldset>
+  <p>This is a skeleton. Rendering and control behaviour are intentionally unfinished.</p>
+</body>
+</html>
