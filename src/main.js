@@ -5,35 +5,60 @@ import { bindControls } from "./ui.js";
 import { createRenderer, uploadMesh, drawFrame } from "./renderer.js";
 
 /**
- * Integration owner: Goo Yong Shen, with interface changes reviewed by all members.
+ * Initialise the static WebGL preview and keep settings/actions on existing interfaces.
+ * Integration owner: Goo Yong Shen.
  * @param {Document} root
- * TODO: once modules are implemented, coordinate a single requestAnimationFrame
- * loop, pass elapsed seconds to updateAnimation, and call drawFrame each frame.
- * Rebuild geometry only when depth/word changes. Handle resize through renderer.js.
- * No rendering algorithm or animation loop is implemented by this scaffold.
+ * @returns {{renderer: object|null, unbind: function(): void}}
+ * Animation and control behavior remain placeholders; this draws the initial mesh.
  */
 export function initialiseApp(root) {
+  const status = root.getElementById("status");
   let settings = { ...DEFAULT_SETTINGS };
   let animation = createAnimationState();
-  const renderer = createRenderer(root.getElementById("gl-canvas"));
-  uploadMesh(renderer, buildLogoMesh(settings));
+  let renderer = null;
+  let unbindControls = () => {};
 
-  /** Integration callback: connect UI settings to the mesh and renderer modules. */
-  function onSettingsChange(nextSettings) {
-    // TODO integration: compare old/new depth before rebuilding, then redraw.
-    settings = nextSettings;
+  try {
+    renderer = createRenderer(root.getElementById("gl-canvas"));
+    uploadMesh(renderer, buildLogoMesh(settings));
+
+    /** Redraw after the UI publishes a complete settings object. */
+    function onSettingsChange(nextSettings) {
+      const geometryChanged = settings.word !== nextSettings.word
+        || settings.depth !== nextSettings.depth;
+      settings = { ...nextSettings };
+      if (geometryChanged) uploadMesh(renderer, buildLogoMesh(settings));
+      drawFrame(renderer, animation.pose, settings);
+    }
+
+    /** Keep playback actions routed to the animation module's existing interface. */
+    function onAction(action) {
+      animation = applyPlaybackAction(animation, action);
+      drawFrame(renderer, animation.pose, settings);
+    }
+
+    unbindControls = bindControls(root, onSettingsChange, onAction);
+    drawFrame(renderer, animation.pose, settings);
+
+    const view = root.defaultView;
+    const redrawAfterResize = () => drawFrame(renderer, animation.pose, settings);
+    view?.addEventListener("resize", redrawAfterResize);
+    if (status) {
+      status.textContent = "Static CPC preview rendered. Animation and control behavior are still unfinished.";
+    }
+
+    return {
+      renderer,
+      unbind() {
+        unbindControls();
+        view?.removeEventListener("resize", redrawAfterResize);
+      }
+    };
+  } catch (error) {
+    if (status) status.textContent = `Could not render the CPC preview: ${error.message}`;
+    console.error(error);
+    return { renderer, unbind: unbindControls };
   }
-
-  /** Integration callback: delegate playback decisions to Tan Jia Hong's module. */
-  function onAction(action) {
-    animation = applyPlaybackAction(animation, action);
-  }
-
-  const unbind = bindControls(root, onSettingsChange, onAction);
-  drawFrame(renderer, animation.pose, settings);
-  root.getElementById("status").textContent =
-    "Skeleton loaded. Geometry, playback, control bindings and WebGL drawing are TODO.";
-  return { renderer, unbind };
 }
 
 initialiseApp(document);
