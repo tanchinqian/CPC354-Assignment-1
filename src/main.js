@@ -48,7 +48,7 @@ export function initialiseApp(root) {
    */
   function stepFrame(timestamp) {
     frameId = null;
-    if (cleanedUp || !animation.running) {
+    if (cleanedUp || !animation.running || root.hidden) {
       previousTimestamp = null;
       return;
     }
@@ -61,18 +61,19 @@ export function initialiseApp(root) {
     animation = updateAnimation(animation, deltaSeconds, settings.speed);
     drawFrame(renderer, animation.pose, settings);
 
-    if (!cleanedUp && animation.running && view?.requestAnimationFrame) {
+    if (!cleanedUp && animation.running && !root.hidden && view?.requestAnimationFrame) {
       frameId = view.requestAnimationFrame(stepFrame);
     }
   }
 
   /**
-   * Schedule the animation loop only if playback is running and no frame is pending.
+   * Schedule the animation loop only if playback is running, the document is visible
+   * and no frame is already pending.
    * Owner: Goo Yong Shen.
    * @returns {void}
    */
   function ensureFrameLoop() {
-    if (cleanedUp || !animation.running || frameId !== null) return;
+    if (cleanedUp || !animation.running || root.hidden || frameId !== null) return;
     if (view?.requestAnimationFrame) {
       frameId = view.requestAnimationFrame(stepFrame);
     }
@@ -129,12 +130,19 @@ export function initialiseApp(root) {
     }
 
     /**
-     * Reset the frame timestamp when switching tabs so returning does not jump.
+     * Suspend scheduled frames while the tab is hidden and resume with a fresh
+     * timestamp when the tab becomes visible again if playback is still running.
      * Owner: Goo Yong Shen.
      * @returns {void}
      */
     function handleVisibilityChange() {
-      if (root.hidden) previousTimestamp = null;
+      if (cleanedUp) return;
+      if (root.hidden) {
+        stopFrameLoop();
+      } else {
+        previousTimestamp = null;
+        ensureFrameLoop();
+      }
     }
 
     unbindControls = bindControls(root, onSettingsChange, onAction);
