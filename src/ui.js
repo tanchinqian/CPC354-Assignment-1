@@ -9,6 +9,48 @@ import { DEFAULT_SETTINGS } from "./config.js";
 // UI Step 1: Read the values currently shown in the controls.
 
 /**
+ * Format a numeric speed multiplier with two decimal places and a multiplication sign.
+ * Owner: Yap Han Lim.
+ * @param {number} value - Numeric speed value.
+ * @returns {string} Formatted multiplier string, e.g. "1.00×".
+ */
+function formatSpeedMultiplier(value) {
+  return `${value.toFixed(2)}×`;
+}
+
+/**
+ * Synchronise the speed output and endpoint labels with the speed slider's actual
+ * value, min and max attributes.
+ * Owner: Yap Han Lim.
+ * @param {Document} root - The page document.
+ * @returns {void}
+ */
+function syncSpeedDisplay(root) {
+  const speedInput = root.getElementById("speed");
+  if (!speedInput) return;
+
+  const speedOutput = root.getElementById("speed-value");
+  const speedMin = root.getElementById("speed-min");
+  const speedMax = root.getElementById("speed-max");
+
+  const currentSpeed = Number(speedInput.value);
+  if (speedOutput && Number.isFinite(currentSpeed) && currentSpeed > 0) {
+    speedOutput.value = formatSpeedMultiplier(currentSpeed);
+    speedOutput.textContent = formatSpeedMultiplier(currentSpeed);
+  }
+
+  const minSpeed = Number(speedInput.min);
+  if (speedMin && speedInput.min !== "" && Number.isFinite(minSpeed)) {
+    speedMin.textContent = formatSpeedMultiplier(minSpeed);
+  }
+
+  const maxSpeed = Number(speedInput.max);
+  if (speedMax && speedInput.max !== "" && Number.isFinite(maxSpeed)) {
+    speedMax.textContent = formatSpeedMultiplier(maxSpeed);
+  }
+}
+
+/**
  * Read and validate depth, speed and colour from the controls.
  * @param {Document} root - The page document, supplied by main.js.
  * @returns {{word: string, depth: number, speed: number, color: string}}
@@ -21,6 +63,9 @@ export function readSettings(root) {
   const depthInput = root.getElementById("depth");
   const speedInput = root.getElementById("speed");
   const colorInput = root.getElementById("color");
+
+  // Keep the speed multiplier display synchronised with the slider.
+  syncSpeedDisplay(root);
 
   // HTML input values are strings.
   // Convert depth and speed into numbers before using them
@@ -68,6 +113,8 @@ export function bindControls(root, onSettingsChange, onAction) {
   const resetButton = root.getElementById("reset");
 
   const status = root.getElementById("status");
+
+  syncSpeedDisplay(root);
 
   // UI Step 4: Handle changes to depth, speed or colour
   function handleSettingsChange() {
