@@ -1,12 +1,13 @@
 # CPC354 Assignment 1
 
-An intentionally unfinished **raw WebGL skeleton** for the CPC 3D word-logo ident.
-The HTML page opens, the JavaScript modules connect, and the contracts are defined.
-The canvas remains blank: no letter mesh, shader program, animation or functional
-control binding has been implemented. This repository does not contain the earlier
-complete prototype.
+A **raw WebGL application** for the CPC 3D word-logo ident.
+The application renders an extruded 3D CPC logo and provides animated turns,
+gradual enlargement and continuous looping movement, alongside interactive parameter
+controls (extrusion depth, animation speed, colour), playback actions (Start, Stop, Reset),
+keyboard shortcuts and responsive viewport resizing. This repository does not contain
+the earlier complete prototype.
 
-## Run the scaffold
+## Run the application
 
 From this folder, run `python -m http.server 8765 --bind 127.0.0.1`, then open
 `http://127.0.0.1:8765`. A local server is needed for browser ES module imports.
@@ -14,15 +15,15 @@ There is no npm installation, framework, bundler or external graphics dependency
 
 ## Four-way ownership
 
-| Member | Primary files | Deliverable to implement |
+| Member | Primary files | Module deliverable |
 | --- | --- | --- |
 | Tan Chin Qian | `src/geometry.js` | Manually defined CPC triangles, extrusion and normals. |
 | Tan Jia Hong | `src/animation.js` | Required stage order, time-based transforms and playback actions. |
 | Yap Han Lim | `index.html`, `styles.css`, `src/ui.js` | Parameter validation, input events and the control interface. |
 | Goo Yong Shen | `src/renderer.js`, `src/main.js` | WebGL setup, shaders, matrix transforms, drawing and integration. |
 
-Every function has an owner, purpose and TODO guidance. Read
-[`docs/INTERFACES.md`](docs/INTERFACES.md) together before implementing a module.
+Every function has an owner and documented purpose. Read
+[`docs/INTERFACES.md`](docs/INTERFACES.md) to review integration contracts.
 Each member should also explain their own module in the report and individual
 video. Research, report review and integration checks are shared work.
 

@@ -12,9 +12,11 @@ The word selected by the group is CPC.
 - Allow parameter selection before starting: extrusion depth, speed and colours.
 - Use different HTML control types, modular functions and clear comments.
 - Consider keyboard/resize events and implement a meaningful extension.
-- Stop/reset are an optional challenge; their module hooks are scaffolded here.
+- Stop/reset are an optional challenge; implemented via animation and UI controls.
 
-No program requirement is marked completed by this skeleton.
+Program modules implement the 3D geometry, raw WebGL rendering, animation stages
+and user controls. Full deliverable completion requires the report, presentation
+videos and viva assessment.
 
 ## Report
 

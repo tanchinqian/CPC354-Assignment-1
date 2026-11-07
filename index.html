@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CPC354 Assignment 1 Skeleton</title>
+  <title>CPC354 Assignment 1 — CPC 3D Word Logo</title>
   <link rel="stylesheet" href="styles.css">
   <script type="module" src="src/main.js"></script>
 </head>
 <body>
   <h1>CPC 3D Word Logo</h1>
-  <p id="status" role="status">Loading the module skeleton...</p>
-  <!-- Static CPC preview is drawn here; animation is still pending. -->
+  <p id="status" role="status">Loading CPC 3D preview...</p>
+  <!-- CPC 3D logo preview and animation canvas. -->
   <canvas id="gl-canvas" width="800" height="450" aria-label="CPC logo preview"></canvas>
-  <!-- Yap Han Lim: complete the bindings in ui.js. These controls are placeholders. -->
+  <!-- Yap Han Lim: UI parameter controls and animation actions. -->
   <fieldset id="controls">
-    <legend>Parameters to set before animation</legend>
+    <legend>Animation controls</legend>
     <label for="depth">Extrusion depth</label>
     <input id="depth" type="number" min="0.01" step="0.01" value="0.5">
-    <label for="speed">Animation speed</label>
-    <input id="speed" type="range" min="0.25" max="2" step="0.25" value="1">
+    <label for="speed">Animation speed: <output id="speed-value" for="speed">1.00×</output></label>
+    <div class="speed-control">
+      <span id="speed-min" class="speed-bound">0.25×</span>
+      <input id="speed" type="range" min="0.25" max="2" step="0.25" value="1">
+      <span id="speed-max" class="speed-bound">2.00×</span>
+    </div>
     <label for="color">Logo colour</label>
     <input id="color" type="color" value="#000000">
     <div>
@@ -27,6 +31,7 @@
       <button id="reset" type="button">Reset</button>
     </div>
   </fieldset>
-  <p>The static CPC preview is available. Animation and control behaviour are still being implemented.</p>
+  <p>Choose your parameters, then press Start. Stop pauses the animation; Start resumes it. Reset restores the original pose.</p>
+  <p>Keyboard shortcuts: Enter = Start, Escape = Stop, R = Reset. Shortcuts work when an input or button is not focused.</p>
 </body>
 </html>
