@@ -19,7 +19,7 @@ const TURN_ANGLE = Math.PI;
 
 // Final scale of the "full-screen" size. The word is about 17 world units wide,
 // so tune this together with the renderer's camera until it fills the window.
-const FULL_SCALE = 2.2;
+const FULL_SCALE = 3.1;
 
 // Largest time step accepted per frame, in seconds. A hidden tab or a stalled
 // machine could produce a huge dt that skips whole phases, so we clamp it.
@@ -41,11 +41,11 @@ const PHASE_DURATION = Object.freeze({
 // Amplitudes are in world units (the word is about 17 wide and 7 high); tune them
 // on screen so no letter leaves the window at full scale.
 const MOVE = Object.freeze({
-  yawAmp: 0.5,      // radians, about +/-29 degrees
-  xAmp: 3.0,        // world units, horizontal drift
-  yAmp: 1.5,        // world units, vertical drift
-  pathFreq: 0.8,    // rad/s: one figure-8 takes 2*pi/0.8, about 7.9 s
-  yawFreq: 0.4      // rad/s: half the path rate
+  yawAmp: 0.25,      // radians, about 14 degrees of sway
+  xAmp: 1.2,        // world units, horizontal drift
+  yAmp: 0.7,        // world units, vertical drift
+  pathFreq: 1.5,    // rad/s: 1.5 cycles per second, so 4.2 s per figure-8
+  yawFreq: 0.75      // rad/s: half the path frequency, so 8.4 s per full yaw cycle
 });
 
 // Design step 2: small maths helpers used by the timeline.
