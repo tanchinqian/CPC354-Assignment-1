@@ -71,6 +71,8 @@ function multiplyMatrices(left, right) {
 
 /**
  * Build the model matrix from the animation module's yaw, scale and translation.
+ * Positive yaw rotates the +Z front face towards +X; translation is in world units
+ * and remains independent of scale.
  * Owner: Goo Yong Shen.
  * @param {{yaw: number, scale: number, translation: number[]}} pose
  * @returns {Float32Array} Column-major model matrix.
@@ -91,12 +93,14 @@ function createModelMatrix(pose = {}) {
 }
 
 /**
- * Create a view matrix for a fixed, slightly angled preview camera.
+ * Create a view matrix for a fixed, slightly angled camera that keeps the CPC
+ * logo within the view frustum at full enlargement (scale 2.2) and throughout
+ * the looping figure-8 drift (x in +/-3, y in +/-1.5, yaw in +/-0.5 rad).
  * Owner: Goo Yong Shen.
  * @returns {Float32Array} Column-major camera view matrix.
  */
 function createViewMatrix() {
-  const eye = [8, 6, 24];
+  const eye = [15, 11.25, 45];
   const eyeLength = Math.hypot(...eye);
   const zAxis = eye.map((component) => component / eyeLength);
   const xAxisRaw = [zAxis[2], 0, -zAxis[0]];
@@ -118,7 +122,11 @@ function createViewMatrix() {
 }
 
 /**
- * Create a perspective projection that fits the centred 17-by-7 CPC layout.
+ * Create a perspective projection that fits the centred 17-by-7 CPC layout,
+ * its 2.2x enlargement and the looping movement path across both desktop (16:9+)
+ * and narrow viewports. Extrusion depth has no upper bound in the brief; this
+ * fixed frustum fits depths up to ~5 world units at full movement and ~20 units
+ * before reaching the near clipping plane.
  * Owner: Goo Yong Shen.
  * @param {number} aspect - Canvas width divided by its height.
  * @returns {Float32Array} Column-major projection matrix.
@@ -126,13 +134,17 @@ function createViewMatrix() {
 function createProjectionMatrix(aspect) {
   const fieldOfView = Math.PI / 4;
   const near = 0.1;
-  const far = 100;
+  const far = 200;
   const focalLength = 1 / Math.tan(fieldOfView / 2);
+  const referenceAspect = 16 / 9;
+  const effectiveAspect = Math.max(aspect, referenceAspect);
+  const xScale = focalLength / effectiveAspect;
+  const yScale = xScale * aspect;
   const range = 1 / (near - far);
 
   return new Float32Array([
-    focalLength / aspect, 0, 0, 0,
-    0, focalLength, 0, 0,
+    xScale, 0, 0, 0,
+    0, yScale, 0, 0,
     0, 0, (far + near) * range, -1,
     0, 0, 2 * far * near * range, 0
   ]);
