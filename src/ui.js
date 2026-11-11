@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS } from "./config.js";
+import { DEFAULT_SETTINGS, DEPTH_LIMITS } from "./config.js";
 
 /** 
  * Owner: Yap Han Lim. UI controls only.
@@ -74,9 +74,9 @@ export function readSettings(root) {
   const color = colorInput.value;
 
   // UI Step 2: Validate the values.
-  // Depth must be a finite positive number.
-  if(!Number.isFinite(depth) || depth <= 0) {
-    throw new Error("Extrusion depth must be a positive number.");
+  // Reject values outside the practical range used by our fixed camera.
+  if (!Number.isFinite(depth) || depth < DEPTH_LIMITS.min || depth > DEPTH_LIMITS.max) {
+    throw new Error(`Extrusion depth must be between ${DEPTH_LIMITS.min} and ${DEPTH_LIMITS.max}.`);
   }
 
   // Speed must also be a finite positive number.

@@ -15,8 +15,8 @@
   <!-- Yap Han Lim: UI parameter controls and animation actions. -->
   <fieldset id="controls">
     <legend>Animation controls</legend>
-    <label for="depth">Extrusion depth</label>
-    <input id="depth" type="number" min="0.01" step="0.01" value="0.5">
+    <label for="depth">Extrusion depth (0.01–1)</label>
+    <input id="depth" type="number" min="0.01" max="1" step="0.01" value="0.5">
     <label for="speed">Animation speed: <output id="speed-value" for="speed">1.00×</output></label>
     <div class="speed-control">
       <span id="speed-min" class="speed-bound">0.25×</span>

@@ -44,7 +44,7 @@ const MOVE = Object.freeze({
   yawAmp: 0.25,      // radians, about 14 degrees of sway
   xAmp: 1.2,        // world units, horizontal drift
   yAmp: 0.7,        // world units, vertical drift
-  pathFreq: 1.5,    // rad/s: 1.5 cycles per second, so 4.2 s per figure-8
+  pathFreq: 1.5,    // rad/s: about 0.24 cycles per second, or 4.2 s per figure-8
   yawFreq: 0.75      // rad/s: half the path frequency, so 8.4 s per full yaw cycle
 });
 

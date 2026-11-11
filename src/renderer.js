@@ -94,8 +94,8 @@ function createModelMatrix(pose = {}) {
 
 /**
  * Create a view matrix for a fixed, slightly angled camera that keeps the CPC
- * logo within the view frustum at full enlargement (scale 2.2) and throughout
- * the looping figure-8 drift (x in +/-3, y in +/-1.5, yaw in +/-0.5 rad).
+ * logo within the view frustum at full enlargement (scale 3.1) and throughout
+ * the looping figure-8 drift (x in +/-1.2, y in +/-0.7, yaw in +/-0.25 rad).
  * Owner: Goo Yong Shen.
  * @returns {Float32Array} Column-major camera view matrix.
  */
@@ -123,10 +123,9 @@ function createViewMatrix() {
 
 /**
  * Create a perspective projection that fits the centred 17-by-7 CPC layout,
- * its 2.2x enlargement and the looping movement path across both desktop (16:9+)
- * and narrow viewports. Extrusion depth has no upper bound in the brief; this
- * fixed frustum fits depths up to ~5 world units at full movement and ~20 units
- * before reaching the near clipping plane.
+ * its 3.1x enlargement and the looping movement path across desktop and narrow
+ * viewports. The UI limits depth to 0.01–1 world units; the geometry module can
+ * still build larger depths, which this fixed camera may clip.
  * Owner: Goo Yong Shen.
  * @param {number} aspect - Canvas width divided by its height.
  * @returns {Float32Array} Column-major projection matrix.

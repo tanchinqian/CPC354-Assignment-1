@@ -1,13 +1,15 @@
 # Module interfaces
 
-These are integration agreements for the approved skeleton, not finished algorithms.
+These are the data contracts used by the integrated application.
 
 ## Settings
 
 `{ word: "CPC", depth: number, speed: number, color: "#RRGGBB" }`
 
 Depth is a positive world-unit value; speed is a positive time multiplier.
-The initial values and HTML input limits are provisional scaffold values. The
+The UI accepts depth from 0.01 to 1 world units, matching DEPTH_LIMITS in config.js
+and the HTML input limits. This is a tested framing choice, not a brief requirement.
+The initial values and other HTML input limits began as scaffold choices. The
 brief specifies the controllable parameters, without prescribing these ranges.
 UI must reject invalid values before publishing settings to main.
 
@@ -17,8 +19,8 @@ UI must reject invalid values before publishing settings to main.
 
 Use unindexed triangles, counterclockwise outward winding, three coordinates per
 vertex, and one outward normal per vertex. Both arrays have `vertexCount * 3`
-entries. Centre the complete word around the origin. Empty arrays mean geometry
-is unfinished; renderer must handle them without a failed draw.
+entries. Centre the complete word around the origin. The renderer accepts empty
+arrays and displays a cleared canvas without a failed draw.
 
 ## Pose from animation
 
